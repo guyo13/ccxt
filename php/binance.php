@@ -1475,14 +1475,8 @@ class binance extends Exchange {
             'interval' => $this->timeframes[$timeframe],
             'limit' => $limit,
         );
-        $duration = $this->parse_timeframe($timeframe);
         if ($since !== null) {
             $request['startTime'] = $since;
-            if ($since > 0) {
-                $endTime = $this->sum($since, $limit * $duration * 1000 - 1);
-                $now = $this->milliseconds();
-                $request['endTime'] = min ($now, $endTime);
-            }
         }
         $method = 'publicGetKlines';
         if ($market['future']) {
