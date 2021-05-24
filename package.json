@@ -1,5 +1,5 @@
 {
-  "name": "@guyo13/ccxt",
+  "name": "guyo13-ccxt",
   "version": "1.49.33",
   "description": "A ccxt fork with some corrections",
   "main": "./ccxt.js",
