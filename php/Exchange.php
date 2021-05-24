@@ -121,6 +121,7 @@ class Exchange {
         'coinspot',
         'crex24',
         'currencycom',
+        'cyborgfi',
         'delta',
         'deribit',
         'digifinex',
@@ -250,6 +251,9 @@ class Exchange {
         'buildOHLCVC' => 'build_ohlcvc',
         'implodeParams' => 'implode_params',
         'extractParams' => 'extract_params',
+        'setProp' => 'set_prop',
+        'getProp' => 'get_prop',
+        'getKey' => 'get_key',
         'fetchImplementation' => 'fetch_implementation',
         'executeRestRequest' => 'execute_rest_request',
         'encodeURIComponent' => 'encode_uri_component',
@@ -367,6 +371,7 @@ class Exchange {
         'safeNumber' => 'safe_number',
         'safeNumber2' => 'safe_number2',
         'parsePrecision' => 'parse_precision',
+        'userInit' => 'user_init',
     );
 
     public static function split($string, $delimiters = array(' ')) {
@@ -1184,6 +1189,9 @@ class Exchange {
 
         $this->urlencode_glue = ini_get('arg_separator.output'); // can be overrided by exchange constructor params
         $this->urlencode_glue_warning = true;
+
+        // Call user exchange specific initialization function
+        $this->user_init($options);
 
         $options = array_replace_recursive($this->describe(), $options);
         if ($options) {
@@ -3071,5 +3079,25 @@ class Exchange {
             return null;
         }
         return '1e' . Precise::string_neg($precision);
+    }
+
+    public function user_init($options) {
+      // Implement per-exchange if needed
+    }
+
+    public static function set_attrib($obj, $prop, $value) {
+      $obj->$prop = $value;
+    }
+
+    public static function get_attrib($obj, $prop) {
+      return $obj->$prop;
+    }
+
+    public static function get_key($dict, $key, $default = null) {
+      if (array_key_exists($key, $dict)) {
+        return $dict->$key;
+      } else {
+        return $default;
+      }
     }
 }

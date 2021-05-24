@@ -28,6 +28,9 @@ const {
     , buildOHLCVC
     , decimalToPrecision
     , defaultFetch
+    , setProp
+    , getProp
+    , getKey
 } = functions
 
 const { // eslint-disable-line object-curly-newline
@@ -280,6 +283,9 @@ module.exports = class Exchange {
             }
         }
         unCamelCaseProperties ()
+
+        // Call user exchange specific initialization function
+        this.userInit(userConfig);
 
         // merge to this
         const configEntries = Object.entries (this.describe ()).concat (Object.entries (userConfig))
@@ -1673,5 +1679,9 @@ module.exports = class Exchange {
             return undefined
         }
         return '1e' + Precise.stringNeg (precision)
+    }
+
+    userInit(userConfig) {
+      // Implement per-exchange if needed
     }
 }

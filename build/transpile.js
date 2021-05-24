@@ -157,7 +157,11 @@ class Transpiler {
             [ /\.base16ToBinary/g, '.base16_to_binary'],
             [ /\'use strict\';?\s+/g, '' ],
             [ /\.urlencodeWithArrayRepeat\s/g, '.urlencode_with_array_repeat' ],
-            [ /\.call\s*\(this, /g, '(' ]
+            [ /\.call\s*\(this, /g, '(' ],
+            [ /\.setProp\s/g, '.set_attrib'],
+            [ /\.getProp\s/g, '.get_attrib'],
+            [ /\.getKey\s/g, '.get_key'],
+            [ /\.userInit\s/g, '.user_init']
         ]
     }
 

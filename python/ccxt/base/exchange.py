@@ -354,6 +354,9 @@ class Exchange(object):
         self.origin = self.uuid()
         self.userAgent = default_user_agent()
 
+        # Call user exchange specific initialization function
+        self.user_init(config)
+
         settings = self.deep_extend(self.describe(), config)
 
         for key in settings:
@@ -2321,3 +2324,19 @@ class Exchange(object):
         if precision is None:
             return None
         return '1e' + Precise.string_neg(precision)
+
+    def user_init(self, config):
+        # Implement per-exchange if needed
+        pass
+
+    @staticmethod
+    def set_attrib(obj, attrib, value):
+        setattr(obj, attrib, value)
+
+    @staticmethod
+    def get_attrib(obj, attrib):
+        return getattr(obj, attrib, None)
+
+    @staticmethod
+    def get_key(dict, key, default=None):
+        return dict.get(key, default)

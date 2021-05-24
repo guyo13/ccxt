@@ -105,6 +105,17 @@ function vwap (baseVolume, quoteVolume) {
     return ((baseVolume !== undefined) && (quoteVolume !== undefined) && (baseVolume > 0)) ? (quoteVolume / baseVolume) : undefined
 }
 
+function setProp (obj, prop, value) {
+    obj[prop] = value;
+}
+
+function getProp (obj, prop) {
+    return obj[prop] || undefined;
+}
+
+function getKey (dict, key, defaultVal=undefined) {
+    return dict[key] || defaultVal;
+}
 /*  ------------------------------------------------------------------------ */
 
 module.exports = {
@@ -133,6 +144,9 @@ module.exports = {
     extractParams,
 
     vwap,
+    setProp,
+    getProp,
+    getKey
 }
 
 /*  ------------------------------------------------------------------------ */

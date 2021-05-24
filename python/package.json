@@ -567,7 +567,9 @@
     "Binance COIN-M Futures",
     "Binance USDⓈ-M Futures",
     "Binance COIN-M",
-    "Binance USDⓈ-M"
+    "Binance USDⓈ-M",
+    "cyborg.fi",
+    "CyborgFi"
   ],
   "collective": {
     "type": "opencollective",
