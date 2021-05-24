@@ -55,6 +55,7 @@ class huobipro(Exchange):
                 'fetchOrder': True,
                 'fetchOrderBook': True,
                 'fetchOrders': True,
+                'fetchOrderTrades': True,
                 'fetchTicker': True,
                 'fetchTickers': True,
                 'fetchTrades': True,
@@ -235,6 +236,7 @@ class huobipro(Exchange):
                     'order-limitorder-price-max-error': InvalidOrder,  # limit order price error
                     'order-holding-limit-failed': InvalidOrder,  # {"status":"error","err-code":"order-holding-limit-failed","err-msg":"Order failed, exceeded the holding limit of self currency","data":null}
                     'order-orderprice-precision-error': InvalidOrder,  # {"status":"error","err-code":"order-orderprice-precision-error","err-msg":"order price precision error, scale: `4`","data":null}
+                    'order-etp-nav-price-max-error': InvalidOrder,  # {"status":"error","err-code":"order-etp-nav-price-max-error","err-msg":"Order price cannot be higher than 5% of NAV","data":null}
                     'order-orderstate-error': OrderNotFound,  # canceling an already canceled order
                     'order-queryorder-invalid': OrderNotFound,  # querying a non-existent order
                     'order-update-error': ExchangeNotAvailable,  # undocumented error
@@ -265,6 +267,7 @@ class huobipro(Exchange):
                 # https://github.com/ccxt/ccxt/issues/2873
                 'GET': 'Themis',  # conflict with GET(Guaranteed Entrance Token, GET Protocol)
                 'HOT': 'Hydro Protocol',  # conflict with HOT(Holo) https://github.com/ccxt/ccxt/issues/4929
+                'NFT': 'APENFT',
                 # https://github.com/ccxt/ccxt/issues/7399
                 # https://coinmarketcap.com/currencies/pnetwork/
                 # https://coinmarketcap.com/currencies/penta/markets/
@@ -657,6 +660,14 @@ class huobipro(Exchange):
             'fee': fee,
         }
 
+    async def fetch_order_trades(self, id, symbol=None, since=None, limit=None, params={}):
+        await self.load_markets()
+        request = {
+            'id': id,
+        }
+        response = await self.privateGetOrderMatchresults(self.extend(request, params))
+        return self.parse_trades(response['data'], None, since, limit)
+
     async def fetch_my_trades(self, symbol=None, since=None, limit=None, params={}):
         await self.load_markets()
         market = None
@@ -670,8 +681,7 @@ class huobipro(Exchange):
             request['start-date'] = self.ymd(since)  # a date within 61 days from today
             request['end-date'] = self.ymd(self.sum(since, 86400000))
         response = await self.privateGetOrderMatchresults(self.extend(request, params))
-        trades = self.parse_trades(response['data'], market, since, limit)
-        return trades
+        return self.parse_trades(response['data'], market, since, limit)
 
     async def fetch_trades(self, symbol, since=None, limit=1000, params={}):
         await self.load_markets()

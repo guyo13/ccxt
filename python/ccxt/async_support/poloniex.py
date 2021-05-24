@@ -189,8 +189,15 @@ class poloniex(Exchange):
                         'min': {
                             'BTC': 0.0001,
                             'ETH': 0.0001,
-                            'XMR': 0.0001,
                             'USDT': 1.0,
+                            'TRX': 100,
+                            'BNB': 0.06,
+                            'USDC': 1.0,
+                            'USDJ': 1.0,
+                            'TUSD': 0.0001,
+                            'DAI': 1.0,
+                            'PAX': 1.0,
+                            'BUSD': 1.0,
                         },
                     },
                 },
@@ -217,7 +224,7 @@ class poloniex(Exchange):
                     'Nonce must be greater': InvalidNonce,
                     'You have already called cancelOrder or moveOrder on self order.': CancelPending,
                     'Amount must be at least': InvalidOrder,  # {"error":"Amount must be at least 0.000001."}
-                    'is either completed or does not exist': InvalidOrder,  # {"error":"Order 587957810791 is either completed or does not exist."}
+                    'is either completed or does not exist': OrderNotFound,  # {"error":"Order 587957810791 is either completed or does not exist."}
                     'Error pulling ': ExchangeError,  # {"error":"Error pulling order book"}
                 },
             },

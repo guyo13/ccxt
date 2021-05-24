@@ -563,7 +563,9 @@ module.exports = class coinbasepro extends Exchange {
         let side = (trade['side'] === 'buy') ? 'sell' : 'buy';
         const orderId = this.safeString (trade, 'order_id');
         // Coinbase Pro returns inverted side to fetchMyTrades vs fetchTrades
-        if (orderId !== undefined) {
+        const makerOrderId = this.safeString (trade, 'maker_order_id');
+        const takerOrderId = this.safeString (trade, 'taker_order_id');
+        if ((orderId !== undefined) || ((makerOrderId !== undefined) && (takerOrderId !== undefined))) {
             side = (trade['side'] === 'buy') ? 'buy' : 'sell';
         }
         const priceString = this.safeString (trade, 'price');
