@@ -7,9 +7,6 @@
   "engines": {
     "node": ">=7.6.0"
   },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.com"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/guyo13/ccxt"
