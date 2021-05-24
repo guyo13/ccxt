@@ -44,6 +44,7 @@ class huobipro extends Exchange {
                 'fetchOrder' => true,
                 'fetchOrderBook' => true,
                 'fetchOrders' => true,
+                'fetchOrderTrades' => true,
                 'fetchTicker' => true,
                 'fetchTickers' => true,
                 'fetchTrades' => true,
@@ -224,6 +225,7 @@ class huobipro extends Exchange {
                     'order-limitorder-price-max-error' => '\\ccxt\\InvalidOrder', // limit order price error
                     'order-holding-limit-failed' => '\\ccxt\\InvalidOrder', // array("status":"error","err-code":"order-holding-limit-failed","err-msg":"Order failed, exceeded the holding limit of this currency","data":null)
                     'order-orderprice-precision-error' => '\\ccxt\\InvalidOrder', // array("status":"error","err-code":"order-orderprice-precision-error","err-msg":"order price precision error, scale => `4`","data":null)
+                    'order-etp-nav-price-max-error' => '\\ccxt\\InvalidOrder', // array("status":"error","err-code":"order-etp-nav-price-max-error","err-msg":"Order price cannot be higher than 5% of NAV","data":null)
                     'order-orderstate-error' => '\\ccxt\\OrderNotFound', // canceling an already canceled order
                     'order-queryorder-invalid' => '\\ccxt\\OrderNotFound', // querying a non-existent order
                     'order-update-error' => '\\ccxt\\ExchangeNotAvailable', // undocumented error
@@ -254,6 +256,7 @@ class huobipro extends Exchange {
                 // https://github.com/ccxt/ccxt/issues/2873
                 'GET' => 'Themis', // conflict with GET (Guaranteed Entrance Token, GET Protocol)
                 'HOT' => 'Hydro Protocol', // conflict with HOT (Holo) https://github.com/ccxt/ccxt/issues/4929
+                'NFT' => 'APENFT',
                 // https://github.com/ccxt/ccxt/issues/7399
                 // https://coinmarketcap.com/currencies/pnetwork/
                 // https://coinmarketcap.com/currencies/penta/markets/
@@ -675,6 +678,15 @@ class huobipro extends Exchange {
         );
     }
 
+    public function fetch_order_trades($id, $symbol = null, $since = null, $limit = null, $params = array ()) {
+        $this->load_markets();
+        $request = array(
+            'id' => $id,
+        );
+        $response = $this->privateGetOrderMatchresults (array_merge($request, $params));
+        return $this->parse_trades($response['data'], null, $since, $limit);
+    }
+
     public function fetch_my_trades($symbol = null, $since = null, $limit = null, $params = array ()) {
         $this->load_markets();
         $market = null;
@@ -691,8 +703,7 @@ class huobipro extends Exchange {
             $request['end-date'] = $this->ymd($this->sum($since, 86400000));
         }
         $response = $this->privateGetOrderMatchresults (array_merge($request, $params));
-        $trades = $this->parse_trades($response['data'], $market, $since, $limit);
-        return $trades;
+        return $this->parse_trades($response['data'], $market, $since, $limit);
     }
 
     public function fetch_trades($symbol, $since = null, $limit = 1000, $params = array ()) {

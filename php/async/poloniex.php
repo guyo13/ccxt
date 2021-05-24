@@ -177,8 +177,15 @@ class poloniex extends Exchange {
                         'min' => array(
                             'BTC' => 0.0001,
                             'ETH' => 0.0001,
-                            'XMR' => 0.0001,
                             'USDT' => 1.0,
+                            'TRX' => 100,
+                            'BNB' => 0.06,
+                            'USDC' => 1.0,
+                            'USDJ' => 1.0,
+                            'TUSD' => 0.0001,
+                            'DAI' => 1.0,
+                            'PAX' => 1.0,
+                            'BUSD' => 1.0,
                         ),
                     ),
                 ),
@@ -205,7 +212,7 @@ class poloniex extends Exchange {
                     'Nonce must be greater' => '\\ccxt\\InvalidNonce',
                     'You have already called cancelOrder or moveOrder on this order.' => '\\ccxt\\CancelPending',
                     'Amount must be at least' => '\\ccxt\\InvalidOrder', // array("error":"Amount must be at least 0.000001.")
-                    'is either completed or does not exist' => '\\ccxt\\InvalidOrder', // array("error":"Order 587957810791 is either completed or does not exist.")
+                    'is either completed or does not exist' => '\\ccxt\\OrderNotFound', // array("error":"Order 587957810791 is either completed or does not exist.")
                     'Error pulling ' => '\\ccxt\\ExchangeError', // array("error":"Error pulling order book")
                 ),
             ),
